@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"gopkg.in/yaml.v2"
 )
@@ -126,11 +127,16 @@ func installCask(pkg string) error {
 	}
 	fmt.Printf("→ Installing cask %s\n", pkg)
 	cmd := exec.Command("brew", "install", "--cask", pkg)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("install cask %s: %w", pkg, err)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		outStr := string(output)
+		if strings.Contains(outStr, "already an app at") || strings.Contains(outStr, "already installed") {
+			fmt.Printf("• %s already present outside Homebrew, skipping\n", pkg)
+			return nil
+		}
+		return fmt.Errorf("install cask %s failed: %v\n%s", pkg, err, outStr)
 	}
+	fmt.Printf("✓ installed cask %s\n", pkg)
 	return nil
 }
 
