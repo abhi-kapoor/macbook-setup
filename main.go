@@ -79,13 +79,18 @@ func ensureTaps(taps []string) error {
 
 // ensureFormulae installs any missing Homebrew formulae.
 func ensureFormulae(categories map[string][]string) error {
+	var failed []string
 	for cat, pkgs := range categories {
 		fmt.Printf("📦 Category %s (%d)\n", cat, len(pkgs))
 		for _, pkg := range pkgs {
 			if err := installFormula(pkg); err != nil {
-				return err
+				fmt.Printf("✗ %s failed: %v\n", pkg, err)
+				failed = append(failed, pkg)
 			}
 		}
+	}
+	if len(failed) > 0 {
+		fmt.Printf("Some formulae failed to install: %v\n", failed)
 	}
 	return nil
 }
@@ -108,13 +113,18 @@ func installFormula(pkg string) error {
 
 // ensureCasks installs any missing Homebrew casks.
 func ensureCasks(categories map[string][]string) error {
+	var failed []string
 	for cat, pkgs := range categories {
 		fmt.Printf("🍺 Cask category %s (%d)\n", cat, len(pkgs))
 		for _, pkg := range pkgs {
 			if err := installCask(pkg); err != nil {
-				return err
+				fmt.Printf("✗ %s failed: %v\n", pkg, err)
+				failed = append(failed, pkg)
 			}
 		}
+	}
+	if len(failed) > 0 {
+		fmt.Printf("Some casks failed to install: %v\n", failed)
 	}
 	return nil
 }
@@ -130,7 +140,7 @@ func installCask(pkg string) error {
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		outStr := string(output)
-		if strings.Contains(outStr, "already an app at") || strings.Contains(outStr, "already installed") || strings.Contains(outStr, "It seems there is") {
+		if strings.Contains(outStr, "already an app at") || strings.Contains(outStr, "already installed") || strings.Contains(outStr, "It seems there is") || strings.Contains(outStr, "depends on hardware architecture") {
 			fmt.Printf("• %s already present outside Homebrew, skipping\n", pkg)
 			return nil
 		}
