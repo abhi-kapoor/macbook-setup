@@ -130,7 +130,7 @@ func installCask(pkg string) error {
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		outStr := string(output)
-		if strings.Contains(outStr, "already an app at") || strings.Contains(outStr, "already installed") {
+		if strings.Contains(outStr, "already an app at") || strings.Contains(outStr, "already installed") || strings.Contains(outStr, "It seems there is") {
 			fmt.Printf("• %s already present outside Homebrew, skipping\n", pkg)
 			return nil
 		}
