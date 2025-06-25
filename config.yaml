@@ -1,0 +1,70 @@
+brew:
+  taps:
+    - grafana/grafana
+    - opslevel/tap
+    - tilt-dev/tap
+  formulae:
+    system:
+      - asdf
+      - mise
+      - git
+      - go
+      - make
+      - jq
+      - just
+      - parallel
+      - python
+      - virtualenv
+      - mkdocs
+    sre:
+      - alloy
+      - argocd
+      - aws-cdk
+      - earthly
+      - gitlab-runner
+      - helm
+      - k6
+      - kubectl
+      - kubent
+      - minikube
+      - operator-sdk
+      - terraform-docs
+      - tfenv
+      - tilt
+      - velero
+      - mysql-client
+      - percona-toolkit
+  casks:
+    dev:
+      - docker
+      - visual-studio-code
+      - goland
+      - postman
+      - burp-suite
+      - ngrok
+    browsers:
+      - google-chrome
+      - firefox
+    communication:
+      - slack
+      - discord
+      - zoom
+      - amazon-chime
+      - whatsapp
+      - messenger
+      - chatgpt
+      - teamviewer
+    utilities:
+      - iterm2
+      - rectangle
+      - virtualbox
+      - viscosity
+      - logi-options-plus
+      - tabletool
+      - zappy
+      - elgato-stream-deck
+      - vlc
+      - yubikey-manager
+    security:
+      - 1password
+      - okta-verify
