@@ -60,11 +60,13 @@ brew:
       - virtualbox
       - viscosity
       - logi-options-plus
-      - tabletool
       - zappy
       - elgato-stream-deck
       - vlc
-      - yubikey-manager
+      - yubico-yubikey-manager
     security:
       - 1password
-      - okta-verify
+
+dotfiles:
+  - .zshrc
+  - .kubectl_aliases
