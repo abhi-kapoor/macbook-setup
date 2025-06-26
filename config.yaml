@@ -3,6 +3,7 @@ brew:
     - grafana/grafana
     - opslevel/tap
     - tilt-dev/tap
+    - superbrothers/zsh-kubectl-prompt
   formulae:
     system:
       - asdf
@@ -16,6 +17,9 @@ brew:
       - python
       - virtualenv
       - mkdocs
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+      - zsh-kubectl-prompt
     sre:
       - alloy
       - argocd

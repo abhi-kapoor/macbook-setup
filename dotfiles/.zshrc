@@ -75,7 +75,6 @@ plugins=(
   zsh-syntax-highlighting
   zsh-autosuggestions
   zsh-kubectl-prompt
-  zsh-aws-vault
   docker
   docker-compose
   brew
@@ -154,3 +153,6 @@ eval "$(/opt/homebrew/bin/mise activate zsh)"
 export PATH="/opt/homebrew/opt/go@1.22/bin:$PATH"
 export PATH="/opt/homebrew/opt/kubernetes-cli@1.31/bin:$PATH"
 export PATH=$PATH:$HOME/go/bin
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/local/share/zsh-kubectl-prompt/kubectl.zsh
