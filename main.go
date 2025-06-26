@@ -13,8 +13,15 @@ import (
 
 func main() {
 	fmt.Println("Hello, Mac Setup!")
+
+	// 1. Homebrew (if missing)
 	if !installHomebrew() {
 		log.Fatal("Homebrew setup failed; aborting")
+	}
+
+	// 2. Oh-My-Zsh (optional)
+	if err := ensureOhMyZsh(); err != nil {
+		fmt.Printf("oh-my-zsh install failed: %v\n", err)
 	}
 
 	// Load configuration
@@ -34,7 +41,7 @@ func main() {
 		log.Fatalf("formula installation failed: %v", err)
 	}
 	if err := ensureCasks(cfg.Brew.Casks); err != nil {
-		log.Fatalf("cask installation failed: %v", err)
+		fmt.Printf("some cask issues occurred: %v\n", err)
 	}
 
 	// Dotfiles symlinking
@@ -52,7 +59,7 @@ func installHomebrew() bool {
 		return true
 	}
 	fmt.Println("Installing Homebrew…")
-	cmd := exec.Command("/bin/bash", "-c", "curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash")
+	cmd := exec.Command("bash", "-c", "curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
@@ -61,6 +68,24 @@ func installHomebrew() bool {
 	}
 	fmt.Println("Homebrew installed successfully")
 	return true
+}
+
+// ensureOhMyZsh installs Oh-My-Zsh if it isn't already present.
+func ensureOhMyZsh() error {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+	omzDir := filepath.Join(homeDir, ".oh-my-zsh")
+	if _, err := os.Stat(omzDir); err == nil {
+		fmt.Println("Oh My Zsh already installed")
+		return nil
+	}
+	fmt.Println("Installing Oh My Zsh…")
+	cmd := exec.Command("bash", "-c", "RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\"")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }
 
 // ensureTaps adds any missing Homebrew taps.
